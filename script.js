@@ -5,7 +5,7 @@ async function loadModels() {
     const statusElement = document.getElementById('status');
     statusElement.textContent = "Chargement des modèles...";
     try {
-        // await faceapi.nets.ssdMobilenetv1.loadFromUri('./models');  // Détection des visages
+        await faceapi.nets.ssdMobilenetv1.loadFromUri('./models');  // Détection des visages
         await faceapi.nets.faceLandmark68Net.loadFromUri('./models');  // Repères faciaux (yeux, nez, bouche)
         await faceapi.nets.faceRecognitionNet.loadFromUri('./models');  // Reconnaissance des visages
         await faceapi.nets.faceExpressionNet.loadFromUri('./models');  // Expressions faciales (joie, colère, etc.)
