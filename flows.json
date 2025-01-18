@@ -1,0 +1,289 @@
+[
+    {
+        "id": "8b2912df7f12c8a1",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "35d51f65cea988f5",
+        "type": "debug",
+        "z": "8b2912df7f12c8a1",
+        "name": "Print name",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "c40dd71f49723c66",
+        "type": "mqtt in",
+        "z": "8b2912df7f12c8a1",
+        "name": "",
+        "topic": "face-detection",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "c0953afb42770e53",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "35d51f65cea988f5",
+                "d2721ec1d1edb8d8",
+                "74d8cd69a68d9dbb"
+            ]
+        ]
+    },
+    {
+        "id": "74d8cd69a68d9dbb",
+        "type": "switch",
+        "z": "8b2912df7f12c8a1",
+        "name": "Access Control",
+        "property": "payload.name",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Mouaad",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "Mouaad",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 580,
+        "y": 420,
+        "wires": [
+            [
+                "d5d211129db8a8cc"
+            ],
+            [
+                "d8fb134f831d8873"
+            ]
+        ]
+    },
+    {
+        "id": "d5d211129db8a8cc",
+        "type": "change",
+        "z": "8b2912df7f12c8a1",
+        "name": "Access authorized",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Accès autorisé ! ",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 830,
+        "y": 360,
+        "wires": [
+            [
+                "33a4521f3a43ecd0"
+            ]
+        ]
+    },
+    {
+        "id": "d8fb134f831d8873",
+        "type": "change",
+        "z": "8b2912df7f12c8a1",
+        "name": "Access denied",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Accès refusé : visage inconnu",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 500,
+        "wires": [
+            [
+                "95a58a562991f0f4"
+            ]
+        ]
+    },
+    {
+        "id": "33a4521f3a43ecd0",
+        "type": "debug",
+        "z": "8b2912df7f12c8a1",
+        "name": "Print Accept",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "95a58a562991f0f4",
+        "type": "debug",
+        "z": "8b2912df7f12c8a1",
+        "name": "Print Deny",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "9d9bf927b39fa1c4",
+        "type": "mqtt out",
+        "z": "8b2912df7f12c8a1",
+        "name": "Visualize on ThingsBoard",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "76ab2b48086d09ae",
+        "x": 1050,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "d2721ec1d1edb8d8",
+        "type": "function",
+        "z": "8b2912df7f12c8a1",
+        "name": "Return Access",
+        "func": "// Remplacer les guillemets simples par des guillemets doubles pour JSON valide\nlet payloadStr = msg.payload.replace(/'/g, '\"');\n\n// Convertir la chaîne JSON corrigée en objet\nmsg.payload = JSON.parse(payloadStr);\n\n// Reformater pour ThingsBoard\nmsg.payload = {\n  detected_person: msg.payload.name || \"Unknown\"\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 240,
+        "wires": [
+            [
+                "9d9bf927b39fa1c4",
+                "53176cec629a8a4c"
+            ]
+        ]
+    },
+    {
+        "id": "53176cec629a8a4c",
+        "type": "debug",
+        "z": "8b2912df7f12c8a1",
+        "name": "AccessThingsBoard",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "c0953afb42770e53",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "76ab2b48086d09ae",
+        "type": "mqtt-broker",
+        "name": "ThingsBoard",
+        "broker": "mqtt.eu.thingsboard.cloud",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
