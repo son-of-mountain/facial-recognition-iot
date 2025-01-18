@@ -21,7 +21,8 @@ This project implements a facial recognition system integrated with IoT technolo
 3. **MQTT Broker (Mosquitto):** Facilitates communication between Python, Node-RED, and ThingsBoard.
 4. **Node-RED:** Processes data, decides actions, and sends notifications.
 5. **ThingsBoard:** Displays real-time data on interactive dashboards.
-
+   
+![image](https://github.com/user-attachments/assets/8041880b-0572-49c9-a66b-c38c86635fd8)
 ---
 
 ## Workflow
