@@ -51,6 +51,9 @@ This project implements a facial recognition system integrated with IoT technolo
 - Node-RED
 - ThingsBoard Account
 
+## built by @son-of-mountain
+
+
 ### Python Dependencies
 Install the required Python libraries:
 ```bash
