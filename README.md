@@ -31,7 +31,7 @@ This project implements a facial recognition system integrated with IoT technolo
    - Sends structured data via MQTT to the `face-detection` topic.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/210e9721-bf43-45a8-8a64-6d54f40915ff" alt="Oracle DBA" width="800"/>
+  <img src="https://github.com/user-attachments/assets/210e9721-bf43-45a8-8a64-6d54f40915ff" alt="Oracle DBA" width="400"/>
 </p>
 
 
